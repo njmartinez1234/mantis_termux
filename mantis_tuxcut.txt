@@ -30,7 +30,7 @@ main_fn () {
 		    	echo "Retrying..."
 		    	start_fn
 		    else
-			    auth_check="$(adb devices | grep 'device')"
+			    auth_check="$(adb devices -l | grep 'model')"
 			    if [[ -z "$auth_check" ]]; then
 			    	start_fn
 			    else
