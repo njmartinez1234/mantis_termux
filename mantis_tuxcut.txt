@@ -28,15 +28,20 @@ main_fn () {
 		    	adb disconnect && adb kill-server
 		    	start_fn
 		    else
-		    	echo "Running MantisBuddy..."
-				list_devices="$(adb devices)"
-				new_var=($list_devices)
-				echo "Device:" ${new_var[4]}
-		    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh
-		    	sleep 3
-		    	echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
-		    	sleep 3
-		    	exit
+			    auth_check="$(adb devices | grep 'unauthorized')"
+			    if [[ -z "$auth_check" ]]; then
+			    	echo "Running MantisBuddy..."
+					list_devices="$(adb devices)"
+					new_var=($list_devices)
+					echo "Device:" ${new_var[4]}
+			    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh
+			    	sleep 3
+			    	echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
+			    	sleep 3
+			    	exit
+			    else
+			    	start_fn
+			    fi
 		    fi
 	    fi
 	else
