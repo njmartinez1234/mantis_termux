@@ -1,29 +1,42 @@
 #!/bin/bash
+var_counter=0
+var_max_attempts=3
 start_fn () {
-	echo "Checking all resources..."
+	if (( $var_counter > $var_max_attempts )); then
+		echo "Please try another activation method or check you'r phone configuration"
+		exit
+	fi
+	echo "Checking all resources... Attempt $var_counter of $var_max_attempts"
 	main_fn
 }
 main_fn () {
+	var_counter=$((var_counter+1))
 	if [[ `which adb` ]]; then
-	    echo "ADB installed.. starting daemon"
+	    echo "ADB installed"
 	    sleep 5
-	    adb &> /dev/null 
-	    auth_check="$(adb devices | grep 'unauthorized')"
-	    if [[ -z "$auth_check" ]]; then
-	    	echo "Running MantisBuddy..."
-			list_devices="$(adb devices)"
-			new_var=($list_devices)
-			echo "Device:" ${new_var[4]}
-	    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh
-	    	sleep 3
-	    	echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
-	    	sleep 3
-	    	exit
-	    else
-	    	echo "Please, Tap Allow button on device\'s USB Debugging "
-	    	sleep 3
-	    	adb disconnect && adb kill-server
+	    adb_check="$(pidof adb)"
+	    if [[ -z "$adb_check" ]]; then
+	    	echo "Starting daemon"
+	    	adb start-server &> /dev/null
 	    	start_fn
+	    else
+		    auth_check="$(adb devices | grep 'unauthorized')"
+		    if [[ -z "$auth_check" ]]; then
+		    	echo "Please, Tap Allow button on device\'s USB Debugging "
+		    	sleep 3
+		    	adb disconnect && adb kill-server
+		    	start_fn
+		    else
+		    	echo "Running MantisBuddy..."
+				list_devices="$(adb devices)"
+				new_var=($list_devices)
+				echo "Device:" ${new_var[4]}
+		    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh
+		    	sleep 3
+		    	echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
+		    	sleep 3
+		    	exit
+		    fi
 	    fi
 	else
 		echo "Installing ADB resources..."
@@ -33,3 +46,4 @@ main_fn () {
 	fi	
 }
 main_fn
+
