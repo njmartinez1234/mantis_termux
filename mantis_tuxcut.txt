@@ -5,20 +5,20 @@ echo "May be required on this activation process to tap Allow button on device\'
 sleep 5
 start_fn () {
 	if (( $var_counter > $var_max_attempts )); then
-		echo "Please try another activation method or check you'r phone configuration"
+		echo "Please, ensure to ALLOW Debugging, try another activation method or check you'r phone configuration"
 		exit
 	fi
-	echo "Checking all resources... Attempt $var_counter of $var_max_attempts"
+	echo "Checking resources... Attempt $var_counter of $var_max_attempts"
 	main_fn
 }
 main_fn () {
 	var_counter=$((var_counter+1))
 	if [[ `which adb` ]]; then
-	    echo "ADB installed"
+	    echo "ADB installed..."
 	    sleep 5
 	    adb_check="$(pidof adb)"
 	    if [[ -z "$adb_check" ]]; then
-	    	echo "Starting daemon"
+	    	echo "Starting daemon..."
 	    	adb start-server &> /dev/null
 	    	start_fn
 	    	sleep 5
@@ -34,9 +34,7 @@ main_fn () {
 					list_devices="$(adb devices)"
 					new_var=($list_devices)
 					echo "Device:" ${new_var[4]}
-			    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh
-			    	sleep 3
-			    	echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
+			    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh && echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
 			    	sleep 3
 			    	exit
 			    fi
@@ -48,7 +46,7 @@ main_fn () {
 		    fi
 	    fi
 	else
-		echo "Installing ADB resources..."
+		echo "Installing ADB resources... plase be patient"
 		apt-get update -y  &> /dev/null ; apt-get install android-tools -y &> /dev/null
 		echo "Done."
 		start_fn
