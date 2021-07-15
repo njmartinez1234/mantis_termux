@@ -18,6 +18,8 @@ main_fn () {
 	    if [[ -z "$adb_check" ]]; then
 	    	echo "Starting daemon"
 	    	adb start-server &> /dev/null
+	    	start_fn
+	    else
 		    auth_check="$(adb devices | grep 'unauthorized')"
 		    if [[ -z "$auth_check" ]]; then
 		    	echo "Please, Tap Allow button on device\'s USB Debugging "
@@ -35,8 +37,6 @@ main_fn () {
 		    	sleep 3
 		    	exit
 		    fi
-	    else
-	    	start_fn
 	    fi
 	else
 		echo "Installing ADB resources..."
