@@ -7,7 +7,7 @@ main_fn () {
 	if [[ `which adb` ]]; then
 	    echo "ADB installed.. starting daemon"
 	    sleep 5
-	    adb &> /dev/nul & 
+	    adb &> /dev/null 
 	    auth_check="$(adb devices | grep 'unauthorized')"
 	    if [[ -z "$auth_check" ]]; then
 	    	echo "Running MantisBuddy..."
