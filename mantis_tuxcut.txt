@@ -21,6 +21,7 @@ main_fn () {
 	    	echo "Starting daemon"
 	    	adb start-server &> /dev/null
 	    	start_fn
+	    	sleep 5
 	    else
 	    	sleep 3
 		    auth_check="$(adb devices | grep 'unauthorized')"
