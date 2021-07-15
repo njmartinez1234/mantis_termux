@@ -25,11 +25,6 @@ main_fn () {
 	    	sleep 3
 		    auth_check="$(adb devices | grep 'unauthorized')"
 		    if [[ -z "$auth_check" ]]; then
-		    	sleep 3
-		    	adb disconnect && adb kill-server
-		    	echo "Retrying..."
-		    	start_fn
-		    else
 			    auth_check="$(adb devices -l | grep 'model')"
 			    if [[ -z "$auth_check" ]]; then
 			    	start_fn
@@ -44,6 +39,11 @@ main_fn () {
 			    	sleep 3
 			    	exit
 			    fi
+		    else
+		    	sleep 3
+		    	adb disconnect && adb kill-server
+		    	echo "Retrying..."
+		    	start_fn
 		    fi
 	    fi
 	else
