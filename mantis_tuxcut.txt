@@ -1,6 +1,8 @@
 #!/bin/bash
 var_counter=0
 var_max_attempts=3
+echo "May be required on this activation process to tap Allow button on device\'s USB Debugging when dialog pop's up."
+sleep 5
 start_fn () {
 	if (( $var_counter > $var_max_attempts )); then
 		echo "Please try another activation method or check you'r phone configuration"
@@ -20,12 +22,12 @@ main_fn () {
 	    	adb start-server &> /dev/null
 	    	start_fn
 	    else
-	    	echo "Please, Tap Allow button on device\'s USB Debugging if dialog pop's up."
 	    	sleep 3
 		    auth_check="$(adb devices | grep 'unauthorized')"
 		    if [[ -z "$auth_check" ]]; then
 		    	sleep 3
 		    	adb disconnect && adb kill-server
+		    	echo "Retrying..."
 		    	start_fn
 		    else
 			    auth_check="$(adb devices | grep 'unauthorized')"
@@ -51,4 +53,4 @@ main_fn () {
 		start_fn
 	fi	
 }
-main_fn
+start_fn
