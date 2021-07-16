@@ -1,56 +1,48 @@
-#!/bin/bash
-var_counter=1
-var_max_attempts=5
-echo "May be required on this activation process to tap Allow button on device\'s USB Debugging when dialog pop's up."
-sleep 5
-start_fn () {
-	if (( $var_counter > $var_max_attempts )); then
-		echo "Please, be sure to ALLOW Debugging, try another activation method or check you'r phone configuration"
-		exit
-	fi
-	echo "Checking resources... Attempt $var_counter of $var_max_attempts"
-	main_fn
-}
-main_fn () {
-	var_counter=$((var_counter+1))
-	if [[ `which adb` ]]; then
-	    echo "ADB installed..."
-	    sleep 5
-	    adb_check="$(pidof adb)"
-	    if [[ -z "$adb_check" ]]; then
-	    	echo "Starting daemon..."
-	    	adb start-server &> /dev/null
-	    	start_fn
-	    	sleep 5
-	    else
-	    	sleep 3
-		    auth_check="$(adb devices | grep 'unauthorized')"
-		    if [[ -z "$auth_check" ]]; then
-			    auth_check="$(adb devices -l | grep 'model')"
-			    if [[ -z "$auth_check" ]]; then
-			    	echo 'No devices found, Retrying...'
-			    	start_fn
-			    else
-			    	echo "Running MantisBuddy..."
-					list_devices="$(adb devices)"
-					new_var=($list_devices)
-					echo "Device:" ${new_var[4]}
-			    	adb -s ${new_var[4]}  shell sh /sdcard/Android/data/app.mantispro.gamepad/files/buddyNew.sh && echo "Activation Complete! Please Launch 'Mantis Gamepad Pro'"
-			    	sleep 3
-			    	exit
-			    fi
-		    else
-		    	sleep 3
-		    	adb disconnect && adb kill-server
-		    	echo "Retrying..."
-		    	start_fn
-		    fi
-	    fi
-	else
-		echo "Installing ADB resources... plase be patient"
-		apt-get update -y  &> /dev/null ; apt-get install android-tools -y &> /dev/null
-		echo "Done."
-		start_fn
-	fi	
-}
-start_fn
+#!/system/bin/sh
+
+set a=`ps | grep app.mantispro.gamepad:i`;
+if [ $2 ]; then
+    echo '1'
+    kill $2
+    kill -9 $2
+else
+    set a=`ps -A | grep app.mantispro.gamepad:i`;
+    if [ $2 ]; then
+        echo '2'
+        kill $2
+        kill -9 $2
+    else
+        echo '3'
+    fi
+fi
+
+TMP_PATH=/sdcard/Android/data/app.mantispro.gamepad/files
+DEX_FILE_NAME=mantis.dex
+
+
+SDK=$(echo $(getprop ro.build.version.sdk))
+echo $SDK
+SDK_BASE=23
+
+if [ -f /system/bin/app_process32 ]; then
+    echo '4'
+    (nohup app_process32 -Djava.class.path=/sdcard/Android/data/app.mantispro.gamepad/files/mantis.dex /sdcard/Android/data/app.mantispro.gamepad/files/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+else
+    echo '5'
+    (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+fi
+
+sleep 2
+
+set a=`ps | grep app.mantispro.gamepad:i`;
+if [ $2 ]; then
+    echo '6'
+else
+    set a=`ps -A | grep app.mantispro.gamepad:i`;
+    if [ $2 ]; then
+        echo '7'
+    else
+        echo '8'
+        (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+    fi
+fi
