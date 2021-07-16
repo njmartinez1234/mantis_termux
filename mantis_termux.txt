@@ -46,3 +46,4 @@ else
         (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
     fi
 fi
+
