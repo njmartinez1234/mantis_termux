@@ -17,16 +17,17 @@ fi
 TMP_PATH=/sdcard/Android/data/app.mantispro.gamepad/files
 DEX_FILE_NAME=mantis.dex
 
+
 SDK=$(echo $(getprop ro.build.version.sdk))
 echo $SDK
 SDK_BASE=23
 
 if [ -f /system/bin/app_process32 ]; then
     echo '4'
-    (nohup app_process32 -Djava.class.path=/sdcard/Android/data/app.mantispro.gamepad/files/mantis.dex /sdcard/Android/data/app.mantispro.gamepad/files/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+    (nohup app_process32 -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
 else
     echo '5'
-    (nohup app_process -Djava.class.path=/sdcard/Android/data/app.mantispro.gamepad/files/mantis.dex app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+    (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
 fi
 
 sleep 2
