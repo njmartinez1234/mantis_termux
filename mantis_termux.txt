@@ -25,6 +25,7 @@ SDK_BASE=23
 if [ -f /system/bin/app_process32 ]; then
     echo '4'
     (nohup app_process32 -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
+    (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
 else
     echo '5'
     (nohup app_process -Djava.class.path=$TMP_PATH/$DEX_FILE_NAME $TMP_PATH/ app.mantispro.injector.injection.InjectServiceKt > /dev/null 2>&1 &)
