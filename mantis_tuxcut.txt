@@ -28,6 +28,7 @@ main_fn () {
 		    if [[ -z "$auth_check" ]]; then
 			    auth_check="$(adb devices -l | grep 'model')"
 			    if [[ -z "$auth_check" ]]; then
+			    	adb disconnect && adb kill-server
 			    	echo 'No devices found, Retrying...'
 			    	start_fn
 			    else
