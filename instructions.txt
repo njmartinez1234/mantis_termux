@@ -1,4 +1,4 @@
-With this instructions you will be able to activate Mantis Gamepad app
+With this instructions you will be able to activate Mantis Gamepad app,
 
 1.Install Mantis Gamepad
 2.Enable developer options on your phone
@@ -20,13 +20,19 @@ curl -s "https://raw.githubusercontent.com/njmartinez1234/mantis_termux/main/man
 15.Allow USB debugging again
 16.Wait untill you see "Activation Complete!" message (if you dont see it, paste and execute commad again on Termux)
 17.Check Mantis Status
+18.Disconnect USB cable
+19.Enjoy
 
-Due this is not a Mantis official method to activate app,you NEED to do this steps 
+NOTES:
+Once you finished, you dont need to repeat all steps when Mantis stops working,
+you just have to open Termux, paste commad line in step 12, and hit Enter, it will activate Mantis again
+
+Due this is not a Mantis devs official method to activate Mantis app,you NEED to repeat this process (from step 5)
 every time you restart your phone
 
 The most you repeat this process, more easier and natural it will be
 
-Next time you restart your phone, you just need to start from the 7th step
+Next time you restart your phone, you just need to start from the 5th step
 
 If you have questions, just leave a comment
 
