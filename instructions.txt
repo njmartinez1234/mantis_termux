@@ -8,7 +8,7 @@ With this instructions you will be able to activate Mantis Gamepad app,
 6.Go to ADB installation folder (Windows) and pess shitf + rigth click and select Open command prompt option CMD/PowerShell
 7.Type adb.exe tcpip 5555 and hit enter
 8.On your phone, Allow USB debugging dialog
-9.DO NOT disconnect your phone yet
+9.DO NOT disconnect your phone yet (Only for the firts time, next times you can disconnect USB cable after runing "adb.exe tcpip 5555" command )
 10.On your phone, Install Termux App from Play Store
 11.Open Termux
 12. copy command line: 
